@@ -9,16 +9,26 @@ class AiTools < Formula
   depends_on "composer"
   
   def install
-    system "composer", "install", "--no-dev"
+    # Install composer dependencies
+    system "composer", "install", "--no-dev", "--prefer-dist"
     
-    # Install the binary
-    bin.install "bin/ai-overview"
+    # Create the libexec directory to store the package files
+    libexec.install Dir["*"]
     
-    # Create a wrapper script for easier usage
+    # Create a wrapper script for the ai-overview command
+    (bin/"ai-overview").write <<~EOS
+      #!/bin/bash
+      PHP_BIN=$(which php)
+      SCRIPT_PATH=#{libexec}/bin/ai-overview
+      $PHP_BIN "$SCRIPT_PATH" "$@"
+    EOS
+    chmod 0755, bin/"ai-overview"
+    
+    # Create a wrapper script for easier usage with ai-tools name
     (bin/"ai-tools").write <<~EOS
       #!/bin/bash
       PHP_BIN=$(which php)
-      SCRIPT_PATH=$(dirname "$0")/ai-overview
+      SCRIPT_PATH=#{libexec}/bin/ai-overview
       $PHP_BIN "$SCRIPT_PATH" "$@"
     EOS
     chmod 0755, bin/"ai-tools"
