@@ -99,11 +99,11 @@ class OverviewGenerator
         // Add Rails-specific viewers if Rails project is detected
         if ($this->projectType->hasTrait('rails')) {
             if ($this->config->isViewerEnabled('rails_routes')) {
-                $this->viewers[] = new \DuaneStorey\AiTools\Viewers\Rails\RoutesViewer($this->projectType);
+                $this->viewers[] = new RailsRoutesViewer($this->projectType);
             }
 
             if ($this->config->isViewerEnabled('rails_schema')) {
-                $this->viewers[] = new \DuaneStorey\AiTools\Viewers\Rails\SchemaViewer($this->projectType);
+                $this->viewers[] = new RailsSchemaViewer($this->projectType);
             }
         }
 

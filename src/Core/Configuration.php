@@ -28,6 +28,8 @@ class Configuration
             'env_variables' => true,
             'laravel_routes' => true,
             'laravel_schema' => true,
+            'rails_routes' => true,
+            'rails_schema' => true,
         ],
     ];
 
