@@ -74,17 +74,17 @@ ai-tools
     "minimum-stability": "stable",
     "require": {
         "php": "^8.0",
-        "symfony/console": "^6.0",
-        "symfony/finder": "^6.0",
-        "symfony/filesystem": "^6.0",
-        "symfony/process": "^6.0"
+        "symfony/console": "*",
+        "symfony/finder": "*",
+        "symfony/filesystem": "*",
+        "symfony/process": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5",
-        "laravel/pint": "^1.0",
-        "phpstan/phpstan": "^1.10",
-        "pestphp/pest": "^2.0",
-        "mockery/mockery": "^1.6"
+        "phpunit/phpunit": "*",
+        "laravel/pint": "*",
+        "phpstan/phpstan": "*",
+        "pestphp/pest": "*",
+        "mockery/mockery": "*"
     },
     "autoload": {
         "psr-4": {

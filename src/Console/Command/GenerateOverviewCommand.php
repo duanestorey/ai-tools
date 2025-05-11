@@ -15,6 +15,11 @@ class GenerateOverviewCommand extends Command
     protected static $defaultName = 'generate';
 
     protected static $defaultDescription = 'Generate AI-friendly project overview';
+    
+    public function __construct()
+    {
+        parent::__construct(self::$defaultName);
+    }
 
     protected function configure(): void
     {
