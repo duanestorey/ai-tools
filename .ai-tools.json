@@ -1,0 +1,24 @@
+{
+    "output_file": "ai-project-overview.md",
+    "excluded_directories": [
+        ".git",
+        "vendor",
+        "node_modules",
+        "tests"
+    ],
+    "excluded_files": [
+        ".env",
+        ".gitignore"
+    ],
+    "viewers": {
+        "project_info": true,
+        "directory_tree": true,
+        "composer_json": true,
+        "package_json": false,
+        "readme": true,
+        "git_info": true,
+        "env_variables": true,
+        "laravel_routes": true,
+        "laravel_schema": true
+    }
+}
