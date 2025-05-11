@@ -8,9 +8,25 @@ class ProjectTypeDetector
 {
     private Filesystem $filesystem;
 
-    public function __construct()
+    public function __construct(?Filesystem $filesystem = null)
     {
-        $this->filesystem = new Filesystem;
+        $this->filesystem = $filesystem ?? new Filesystem;
+    }
+
+    /**
+     * Get the filesystem instance
+     */
+    public function getFilesystem(): Filesystem
+    {
+        return $this->filesystem;
+    }
+
+    /**
+     * Get file contents
+     */
+    public function getFileContents(string $path): string
+    {
+        return file_get_contents($path);
     }
 
     /**
@@ -31,7 +47,7 @@ class ProjectTypeDetector
                 $projectType->setMetadata('laravel_version', $laravelVersion);
             }
         }
-        
+
         // Check for Rails
         if ($this->isRailsProject($projectRoot)) {
             $projectType->addTrait('rails');
@@ -50,7 +66,7 @@ class ProjectTypeDetector
     /**
      * Check if the project is a Laravel project
      */
-    private function isLaravelProject(string $projectRoot): bool
+    protected function isLaravelProject(string $projectRoot): bool
     {
         // Check for artisan file
         if ($this->filesystem->exists($projectRoot.'/artisan')) {
@@ -78,7 +94,7 @@ class ProjectTypeDetector
     /**
      * Detect Laravel version
      */
-    private function detectLaravelVersion(string $projectRoot): ?string
+    protected function detectLaravelVersion(string $projectRoot): ?string
     {
         // Try to get version from composer.json
         if ($this->filesystem->exists($projectRoot.'/composer.json')) {
@@ -111,62 +127,62 @@ class ProjectTypeDetector
 
         return null;
     }
-    
+
     /**
      * Check if the project is a Rails project
      */
-    private function isRailsProject(string $projectRoot): bool
+    protected function isRailsProject(string $projectRoot): bool
     {
         // Check for config/application.rb file (Rails specific)
         if ($this->filesystem->exists($projectRoot.'/config/application.rb')) {
-            $content = file_get_contents($projectRoot.'/config/application.rb');
+            $content = $this->getFileContents($projectRoot.'/config/application.rb');
             if (strpos($content, 'Rails::Application') !== false) {
                 return true;
             }
         }
-        
+
         // Check for Gemfile with Rails
         if ($this->filesystem->exists($projectRoot.'/Gemfile')) {
-            $content = file_get_contents($projectRoot.'/Gemfile');
-            if (preg_match('/gem\\s+[\\\'\"](rails)[\\\'\"]/i', $content)) {
+            $content = $this->getFileContents($projectRoot.'/Gemfile');
+            if (preg_match('/gem\s+[\'\"](rails)[\'\"]/i', $content)) {
                 return true;
             }
         }
-        
+
         // Check for app/controllers directory (common in Rails)
-        if ($this->filesystem->exists($projectRoot.'/app/controllers') && 
+        if ($this->filesystem->exists($projectRoot.'/app/controllers') &&
             $this->filesystem->exists($projectRoot.'/app/models')) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Detect Rails version
      */
-    private function detectRailsVersion(string $projectRoot): ?string
+    protected function detectRailsVersion(string $projectRoot): ?string
     {
         // Try to get version from Gemfile
         if ($this->filesystem->exists($projectRoot.'/Gemfile')) {
-            $content = file_get_contents($projectRoot.'/Gemfile');
-            
+            $content = $this->getFileContents($projectRoot.'/Gemfile');
+
             // Look for gem 'rails', '~> X.Y.Z' or gem 'rails', 'X.Y.Z'
-            if (preg_match('/gem\\s+[\\\'\"](rails)[\\\'\"](,\\s*[\\\'\"](~>\\s*)?(\\d+))?/i', $content, $matches)) {
+            if (preg_match('/gem\s+[\'\"](rails)[\'\"](\,\s*[\'\"](\~\>\s*)?(\d+))?/i', $content, $matches)) {
                 return isset($matches[4]) ? $matches[4] : null; // Return major version number
             }
         }
-        
+
         // Try to get version from Gemfile.lock
         if ($this->filesystem->exists($projectRoot.'/Gemfile.lock')) {
-            $content = file_get_contents($projectRoot.'/Gemfile.lock');
-            
+            $content = $this->getFileContents($projectRoot.'/Gemfile.lock');
+
             // Look for rails (X.Y.Z) in the dependencies section
-            if (preg_match('/rails\\s+\\((\\d+)/', $content, $matches)) {
+            if (preg_match('/rails\s+\((\d+)/', $content, $matches)) {
                 return $matches[1]; // Return major version number
             }
         }
-        
+
         return null;
     }
 }

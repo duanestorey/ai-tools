@@ -89,7 +89,7 @@ class ProjectType
 
             return 'Laravel Project';
         }
-        
+
         if ($this->hasTrait('rails')) {
             $version = $this->getMetadata('rails_version');
             if ($version) {
@@ -101,7 +101,7 @@ class ProjectType
 
         return 'PHP Project';
     }
-    
+
     /**
      * Check if the project is a Rails project
      */

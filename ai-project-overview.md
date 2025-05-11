@@ -11,10 +11,16 @@
 
 ```
 ai-tools
+├── .github
+│   └── workflows
+│   │   └── update-homebrew.yml
 ├── bin
 │   └── ai-overview
 ├── docs
 │   └── CREATING_CUSTOM_VIEWERS.md
+├── homebrew
+│   ├── ai-tools.rb
+│   └── README.md
 ├── src
 │   ├── Console
 │   │   ├── Command
@@ -28,6 +34,9 @@ ai-tools
 │   │   └── ProjectTypeDetector.php
 │   └── Viewers
 │   │   ├── Laravel
+│   │   │   ├── RoutesViewer.php
+│   │   │   └── SchemaViewer.php
+│   │   ├── Rails
 │   │   │   ├── RoutesViewer.php
 │   │   │   └── SchemaViewer.php
 │   │   ├── ComposerJsonViewer.php
@@ -59,7 +68,7 @@ ai-tools
     "authors": [
         {
             "name": "Duane Storey",
-            "email": "duane@example.com"
+            "email": "duanestorey@gmail.com"
         }
     ],
     "minimum-stability": "stable",
@@ -71,9 +80,11 @@ ai-tools
         "symfony/process": "^6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.5",
         "laravel/pint": "^1.0",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "pestphp/pest": "^2.0",
+        "mockery/mockery": "^1.6"
     },
     "autoload": {
         "psr-4": {
@@ -89,15 +100,20 @@ ai-tools
         "bin/ai-overview"
     ],
     "scripts": {
-        "test": "phpunit",
-        "pint": "pint",
-        "pint-test": "pint --test",
-        "phpstan": "phpstan analyse --memory-limit=256M",
+        "lint": "pint",
+        "analyse": "phpstan analyse",
+        "test": "pest",
+        "test:coverage": "pest --coverage",
         "quality": [
-            "@pint",
-            "@pint-test",
-            "@phpstan"
+            "@lint",
+            "@analyse",
+            "@test"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
 ```
