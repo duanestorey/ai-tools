@@ -89,7 +89,24 @@ class ProjectType
 
             return 'Laravel Project';
         }
+        
+        if ($this->hasTrait('rails')) {
+            $version = $this->getMetadata('rails_version');
+            if ($version) {
+                return "Ruby on Rails {$version}.x Project";
+            }
+
+            return 'Ruby on Rails Project';
+        }
 
         return 'PHP Project';
+    }
+    
+    /**
+     * Check if the project is a Rails project
+     */
+    public function isRails(): bool
+    {
+        return $this->hasTrait('rails');
     }
 }
