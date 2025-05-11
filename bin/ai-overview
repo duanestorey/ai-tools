@@ -7,6 +7,23 @@ $autoloadPaths = [
     __DIR__ . '/../../../autoload.php',            // Package is installed via Composer
 ];
 
+// Check for Homebrew installations
+$homebrewPaths = [
+    '/opt/homebrew/Cellar/ai-tools/', // Apple Silicon Macs
+    '/usr/local/Cellar/ai-tools/',    // Intel Macs
+];
+
+foreach ($homebrewPaths as $brewPath) {
+    if (is_dir($brewPath)) {
+        $versions = glob($brewPath . '*', GLOB_ONLYDIR);
+        if (!empty($versions)) {
+            // Use the latest version (assuming version numbers sort correctly)
+            rsort($versions);
+            $autoloadPaths[] = $versions[0] . '/vendor/autoload.php';
+        }
+    }
+}
+
 $autoloaderFound = false;
 foreach ($autoloadPaths as $autoloadPath) {
     if (file_exists($autoloadPath)) {
