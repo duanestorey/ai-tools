@@ -4,6 +4,7 @@ namespace DuaneStorey\AiTools\Console\Command;
 
 use DuaneStorey\AiTools\Core\OverviewGenerator;
 use DuaneStorey\AiTools\Core\ProjectFinder;
+use DuaneStorey\AiTools\Core\Version;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,7 +33,7 @@ class GenerateOverviewCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title('<fg=green>duanestorey/ai-tools v1.0.0</>');
+        $io->title(sprintf('<fg=green>duanestorey/ai-tools v%s</>', Version::get()));
 
         // Find project root
         $projectFinder = new ProjectFinder;

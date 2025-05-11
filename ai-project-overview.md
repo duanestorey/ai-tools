@@ -2,7 +2,7 @@
 
 - **Project Type**: PHP Project
 - **Traits**: php
-- **PHP Version**: 8.4.6
+- **PHP Version**: 8.4.7
 - **Project Name**: duanestorey/ai-tools
 - **Description**: Tools for generating AI-friendly project overviews
 - **License**: MIT
@@ -31,7 +31,8 @@ ai-tools
 │   │   ├── OverviewGenerator.php
 │   │   ├── ProjectFinder.php
 │   │   ├── ProjectType.php
-│   │   └── ProjectTypeDetector.php
+│   │   ├── ProjectTypeDetector.php
+│   │   └── Version.php
 │   └── Viewers
 │   │   ├── Laravel
 │   │   │   ├── RoutesViewer.php
@@ -48,6 +49,7 @@ ai-tools
 │   │   ├── ReadmeViewer.php
 │   │   └── ViewerInterface.php
 ├── .ai-tools.json
+├── .DS_Store
 ├── ai-project-overview.md
 ├── composer.json
 ├── composer.lock

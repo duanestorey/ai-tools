@@ -8,6 +8,8 @@ use DuaneStorey\AiTools\Viewers\EnvVariablesViewer;
 use DuaneStorey\AiTools\Viewers\GitInfoViewer;
 use DuaneStorey\AiTools\Viewers\Laravel\RoutesViewer;
 use DuaneStorey\AiTools\Viewers\Laravel\SchemaViewer;
+use DuaneStorey\AiTools\Viewers\Rails\RoutesViewer as RailsRoutesViewer;
+use DuaneStorey\AiTools\Viewers\Rails\SchemaViewer as RailsSchemaViewer;
 use DuaneStorey\AiTools\Viewers\PackageJsonViewer;
 use DuaneStorey\AiTools\Viewers\ProjectInfoViewer;
 use DuaneStorey\AiTools\Viewers\ReadmeViewer;
@@ -91,6 +93,17 @@ class OverviewGenerator
 
             if ($this->config->isViewerEnabled('laravel_schema')) {
                 $this->viewers[] = new SchemaViewer($this->projectType);
+            }
+        }
+
+        // Add Rails-specific viewers if Rails project is detected
+        if ($this->projectType->hasTrait('rails')) {
+            if ($this->config->isViewerEnabled('rails_routes')) {
+                $this->viewers[] = new \DuaneStorey\AiTools\Viewers\Rails\RoutesViewer($this->projectType);
+            }
+
+            if ($this->config->isViewerEnabled('rails_schema')) {
+                $this->viewers[] = new \DuaneStorey\AiTools\Viewers\Rails\SchemaViewer($this->projectType);
             }
         }
 
