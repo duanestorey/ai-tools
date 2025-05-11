@@ -133,10 +133,10 @@ class OverviewGenerator
 
             if ($viewer->isApplicable($this->projectRoot)) {
                 $viewerContent = $viewer->generate($this->projectRoot);
-                $content .= $viewerContent."\n\n";
+                $content .= $viewerContent."\n";
             } else {
                 // Add a placeholder section for non-applicable viewers
-                $content .= "# {$viewer->getName()}\n\nNot applicable for this project.\n\n";
+                $content .= "# {$viewer->getName()}\n\nNot applicable for this project.\n";
             }
         }
 

@@ -66,26 +66,7 @@ class GitInfoViewer implements ViewerInterface
             }
         }
 
-        // Get Git configuration relevant to the project
-        $configProcess = new Process(['git', 'config', '--list', '--local']);
-        $configProcess->setWorkingDirectory($projectRoot);
-        $configProcess->run();
-
-        if ($configProcess->isSuccessful()) {
-            $config = trim($configProcess->getOutput());
-            if (! empty($config)) {
-                // Filter out sensitive information
-                $configLines = explode("\n", $config);
-                $filteredConfig = array_filter($configLines, function ($line) {
-                    // Exclude lines with potential credentials or tokens
-                    return ! preg_match('/(password|token|secret|key|credential)/i', $line);
-                });
-
-                if (! empty($filteredConfig)) {
-                    $output .= "## Git Configuration\n\n```\n".implode("\n", $filteredConfig)."\n```\n\n";
-                }
-            }
-        }
+        // Git configuration section removed as it doesn't provide significant value for AI assistants
 
         return $output;
     }

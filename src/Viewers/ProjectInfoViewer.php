@@ -82,7 +82,7 @@ class ProjectInfoViewer implements ViewerInterface
             }
         }
 
-        return $output."\n";
+        return $output;
     }
 
     public function hasChanged(string $projectRoot): bool

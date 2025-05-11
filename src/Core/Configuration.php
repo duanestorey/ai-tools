@@ -16,7 +16,7 @@ class Configuration
         'excluded_directories' => ['.git', 'vendor', 'node_modules'],
         'excluded_files' => [],
         'directory_tree' => [
-            'max_depth' => 4,
+            'max_depth' => 5,
         ],
         'viewers' => [
             'project_info' => true,

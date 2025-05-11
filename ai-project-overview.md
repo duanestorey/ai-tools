@@ -7,8 +7,6 @@
 - **Description**: Tools for generating AI-friendly project overviews
 - **License**: MIT
 
-
-
 # Directory Tree
 
 ```
@@ -41,14 +39,14 @@ ai-tools
 │   │   ├── ReadmeViewer.php
 │   │   └── ViewerInterface.php
 ├── .ai-tools.json
-├── ai-overview.md
 ├── ai-project-overview.md
 ├── composer.json
 ├── composer.lock
+├── phpstan.neon
+├── pint.json
 └── README.md
 
 ```
-
 
 # Composer JSON
 
@@ -73,7 +71,9 @@ ai-tools
         "symfony/process": "^6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "laravel/pint": "^1.0",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {
@@ -89,11 +89,18 @@ ai-tools
         "bin/ai-overview"
     ],
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "pint": "pint",
+        "pint-test": "pint --test",
+        "phpstan": "phpstan analyse --memory-limit=256M",
+        "quality": [
+            "@pint",
+            "@pint-test",
+            "@phpstan"
+        ]
     }
 }
 ```
-
 
 # README Content
 
@@ -105,17 +112,11 @@ A Composer package for generating AI-friendly project overviews. This tool creat
 
 ### Via Composer
 
-Add the package to your project using Composer:
-
 ```bash
 composer require duanestorey/ai-tools --dev
 ```
 
-We recommend installing it as a dev dependency since it's primarily a development tool.
-
 ### Manual Installation
-
-If you prefer manual installation:
 
 1. Clone this repository
 2. Run `composer install` in the cloned directory
@@ -133,12 +134,15 @@ vendor/bin/ai-overview generate
 
 # Generate and watch for changes
 vendor/bin/ai-overview generate --watch
+
+# Create an example configuration file
+vendor/bin/ai-overview generate --init-config
 ```
 
 This will create an `ai-overview.md` file in your project root with:
 
 1. **Project Information**: Details about the detected project type and framework
-2. **Directory Tree**: A complete ASCII representation of your project structure (excluding files in .gitignore)
+2. **Directory Tree**: A complete ASCII representation of your project structure (excluding directories and files specified in the configuration)
 3. **Package JSON**: Contents of package.json (if exists in your project)
 4. **Composer JSON**: Contents of your composer.json file
 5. **README**: Contents of your project's README.md file (if exists)
@@ -149,6 +153,29 @@ For Laravel projects, additional sections are automatically included:
 
 8. **Laravel Routes**: API and web routes with their controllers
 9. **Database Schema**: Table structure extracted from migrations and models
+
+### Code Quality Tools
+
+This package includes several tools to maintain code quality:
+
+- **Laravel Pint**: A PHP code style fixer based on PHP-CS-Fixer
+- **PHPStan/Larastan**: A static analysis tool to find bugs and errors
+
+You can run these tools using the following commands:
+
+```bash
+# Format code using Laravel Pint
+composer pint
+
+# Check code style without making changes
+composer pint-test
+
+# Run static analysis with PHPStan
+composer phpstan
+
+# Run all quality checks (format, test, and analyse)
+composer quality
+```
 
 ### Integrating with Build Processes
 
@@ -247,8 +274,8 @@ The tool uses a plugin-based architecture with "viewers" for different content t
 
 #### Core Viewers (Always Included)
 
-- **ProjectInfoViewer**: Provides information about the detected project type
-- **DirectoryTreeViewer**: Generates an ASCII representation of your project structure
+- **ProjectInfoViewer**: Provides information about the detected project type, PHP version, and project metadata
+- **DirectoryTreeViewer**: Generates an ASCII representation of your project structure, respecting excluded directories/files and max depth settings
 - **ComposerJsonViewer**: Includes the contents of your composer.json file
 - **PackageJsonViewer**: Includes the contents of your package.json file (if present)
 - **ReadmeViewer**: Includes the contents of your README.md file (if present)
@@ -281,33 +308,20 @@ You can extend the tool with custom viewers by implementing the `ViewerInterface
 
 MIT
 
-
 # Git Information
 
 ## Repository URL
 
 `https://github.com/duanestorey/ai-tools.git`
 
-## Git Configuration
+## Branches
 
 ```
-core.repositoryformatversion=0
-core.filemode=true
-core.bare=false
-core.logallrefupdates=true
-core.ignorecase=true
-core.precomposeunicode=true
-submodule.active=.
-remote.origin.url=https://duanestorey@github.com/duanestorey/ai-tools.git
-remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
-remote.origin.gtserviceaccountidentifier=fcba5cac1386d249702bd363a5d2247fde30c8424a8a5b1655cbcece72cec25c
-branch.main.remote=origin
-branch.main.merge=refs/heads/main
+* main
+remotes/origin/main
 ```
-
 
 
 # Environment Variables
 
 Not applicable for this project.
-
