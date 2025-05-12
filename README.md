@@ -23,14 +23,14 @@ composer require duanestorey/ai-tools --dev
 After installation, you can generate an AI-friendly overview of your project:
 
 ```bash
+# Initialize configuration file
+vendor/bin/ai-overview init
+
 # Generate overview once
 vendor/bin/ai-overview generate
 
 # Generate and watch for changes
 vendor/bin/ai-overview generate --watch
-
-# Create an example configuration file
-vendor/bin/ai-overview generate --init-config
 ```
 
 This will create an `ai-overview.md` file in your project root with:
@@ -113,7 +113,7 @@ vendor/bin/ai-overview generate
 The tool can be configured using a `.ai-tools.json` file in your project root. To create an example configuration file, run:
 
 ```bash
-php bin/ai-overview generate --init-config
+php bin/ai-overview init
 ```
 
 This will create a `.ai-tools.json` file with default settings and add it to your `.gitignore` file if one exists.

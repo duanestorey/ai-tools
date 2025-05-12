@@ -2,21 +2,30 @@
 
 namespace DuaneStorey\AiTools\Console\Command;
 
-use DuaneStorey\AiTools\Core\OverviewGenerator;
+use DuaneStorey\AiTools\Core\Configuration;
 use DuaneStorey\AiTools\Core\ProjectFinder;
 use DuaneStorey\AiTools\Core\Version;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class GenerateOverviewCommand extends Command
+class InitConfigCommand extends Command
 {
-    protected static $defaultName = 'generate';
+    /**
+     * The default name of the command
+     *
+     * @var string
+     */
+    protected static $defaultName = 'init';
 
-    protected static $defaultDescription = 'Generate AI-friendly project overview';
-    
+    /**
+     * The default description of the command
+     *
+     * @var string
+     */
+    protected static $defaultDescription = 'Create an example .ai-tools.json configuration file';
+
     public function __construct()
     {
         parent::__construct(self::$defaultName);
@@ -25,8 +34,7 @@ class GenerateOverviewCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
-            ->addOption('watch', 'w', InputOption::VALUE_NONE, 'Watch for changes and regenerate automatically');
+            ->setDescription(self::$defaultDescription);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -46,17 +54,18 @@ class GenerateOverviewCommand extends Command
 
         $io->text(sprintf('Project root: <info>%s</info>', $projectRoot));
 
-        // Create overview generator
-        $generator = new OverviewGenerator($projectRoot, $io);
+        // Create configuration file
+        $config = new Configuration($projectRoot);
+        if ($config->createExampleConfig($projectRoot)) {
+            $io->success('Created example configuration file: .ai-tools.json');
+            $io->text('You can customize this file to configure the AI overview generator.');
+            $io->text('The file has been added to your .gitignore if it exists.');
 
-        // Watch mode
-        if ($input->getOption('watch')) {
-            $io->note('Watch mode enabled. Press Ctrl+C to stop.');
+            return Command::SUCCESS;
+        } else {
+            $io->warning('Configuration file already exists. Not overwriting.');
 
-            return $generator->watchAndGenerate();
+            return Command::SUCCESS;
         }
-
-        // One-time generation
-        return $generator->generate();
     }
 }
