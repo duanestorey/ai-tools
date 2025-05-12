@@ -45,8 +45,10 @@ class RoutesViewer implements ViewerInterface
      */
     public function createProcess(array $command, ?string $workingDirectory = null): Process
     {
+        // Use array syntax for commands to avoid shell interpolation issues
         $process = new Process($command, $workingDirectory);
-
+        $process->setTimeout(60); // Set a reasonable timeout
+        
         return $process;
     }
 
