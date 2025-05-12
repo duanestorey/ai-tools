@@ -55,7 +55,8 @@ ai-tools
 ├── composer.lock
 ├── phpstan.neon
 ├── pint.json
-└── README.md
+├── README.md
+└── test-exclusion.php
 
 ```
 
@@ -247,7 +248,7 @@ Here's an example configuration file:
 ```json
 {
   "output_file": "ai-overview.md",
-  "excluded_directories": [".git", "vendor", "node_modules"],
+  "excluded_directories": [".git", "vendor", "node_modules", "path/to/specific/directory"],
   "excluded_files": [".env"],
   "directory_tree": {
     "max_depth": 4
@@ -269,7 +270,7 @@ Here's an example configuration file:
 ### Configuration Options
 
 - **output_file**: The name of the generated overview file (default: `ai-overview.md`)
-- **excluded_directories**: Directories to exclude from the directory tree and file watching
+- **excluded_directories**: Directories to exclude from the directory tree and file watching. Supports both simple directory names (e.g., `vendor`) and path-based exclusions (e.g., `path/to/directory`)
 - **excluded_files**: Files to exclude from the directory tree and file watching
 - **directory_tree**: Configuration options for the directory tree viewer
   - **max_depth**: Maximum depth to display in the directory tree (default: `4`)

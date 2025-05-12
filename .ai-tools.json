@@ -10,6 +10,9 @@
         ".env",
         ".gitignore"
     ],
+    "directory_tree": {
+        "max_depth": 4
+    },
     "viewers": {
         "project_info": true,
         "directory_tree": true,

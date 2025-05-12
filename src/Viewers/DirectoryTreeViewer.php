@@ -9,6 +9,8 @@ class DirectoryTreeViewer implements ViewerInterface
     private ?string $lastHash = null;
 
     private Configuration $config;
+    
+    private string $projectRoot;
 
     public function __construct()
     {
@@ -33,7 +35,11 @@ class DirectoryTreeViewer implements ViewerInterface
 
         $output = "# Directory Tree\n\n```\n";
         $output .= basename($projectRoot)."\n";
-        $this->buildTree($projectRoot, $output, 0);
+        
+        // Store the project root for path calculations
+        $this->projectRoot = $projectRoot;
+        
+        $this->buildTree($projectRoot, $output, 0, ''); // Pass empty string as initial relative path
         $output .= "\n```\n";
 
         return $output;
@@ -61,15 +67,17 @@ class DirectoryTreeViewer implements ViewerInterface
      * @param string $directory The current directory
      * @param string &$output   Reference to the output string
      * @param int    $depth     Current depth level
+     * @param string $relativePath The relative path from the project root
      */
-    private function buildTree(string $directory, string &$output, int $depth): void
+    private function buildTree(string $directory, string &$output, int $depth, string $relativePath = ''): void
     {
         // Get excluded directories and files from config
         $excludedDirs = $this->config->get('excluded_directories', ['.git', 'vendor', 'node_modules']);
         $excludedFiles = $this->config->get('excluded_files', []);
-
+        
         // Check max depth
         $maxDepth = $this->config->get('directory_tree.max_depth', 4);
+        
         if ($depth >= $maxDepth) {
             return;
         }
@@ -86,10 +94,44 @@ class DirectoryTreeViewer implements ViewerInterface
 
             $path = $directory.'/'.$item;
             $isDir = is_dir($path);
+            
+            // Calculate the current relative path
+            // Get the real path of the current directory
+            $realPath = realpath($path);
+            // Calculate the relative path from the project root
+            $currentRelativePath = str_replace($this->projectRoot.'/', '', $realPath);
+            
+            // No debug statements needed
 
             // Skip excluded directories
-            if ($isDir && in_array($item, $excludedDirs)) {
-                continue;
+            if ($isDir) {
+                $shouldExclude = false;
+                
+                // Debug all directory paths at depth 3
+                if ($depth === 3) {
+                    echo "Processing directory at depth 3: {$currentRelativePath}\n";
+                }
+                
+                // Check simple directory name exclusions
+                if (in_array($item, $excludedDirs)) {
+                    $shouldExclude = true;
+                }
+                
+                // Check path-based exclusions
+                foreach ($excludedDirs as $excludedDir) {
+                    // Only process path-based exclusions (containing a slash)
+                    if (strpos($excludedDir, '/') !== false) {
+                        // Check if the current path contains the exclusion path
+                        if (strpos($currentRelativePath, $excludedDir) !== false) {
+                            $shouldExclude = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if ($shouldExclude) {
+                    continue;
+                }
             }
 
             // Skip excluded files
@@ -144,7 +186,7 @@ class DirectoryTreeViewer implements ViewerInterface
                     $childPrefix .= '│   ';
                 }
 
-                $this->buildTree($path, $output, $depth + 1);
+                $this->buildTree($path, $output, $depth + 1, $currentRelativePath);
             }
         }
     }
@@ -159,7 +201,7 @@ class DirectoryTreeViewer implements ViewerInterface
     private function generateDirectoryHash(string $projectRoot): string
     {
         $output = '';
-        $this->buildTree($projectRoot, $output, 0);
+        $this->buildTree($projectRoot, $output, 0, '');
 
         return md5($output);
     }
