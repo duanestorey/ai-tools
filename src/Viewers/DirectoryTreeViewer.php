@@ -107,10 +107,7 @@ class DirectoryTreeViewer implements ViewerInterface
             if ($isDir) {
                 $shouldExclude = false;
                 
-                // Debug all directory paths at depth 3
-                if ($depth === 3) {
-                    echo "Processing directory at depth 3: {$currentRelativePath}\n";
-                }
+                // No debug statements needed
                 
                 // Check simple directory name exclusions
                 if (in_array($item, $excludedDirs)) {

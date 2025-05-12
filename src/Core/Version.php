@@ -10,7 +10,7 @@ class Version
     /**
      * The current version of the package
      */
-    public const VERSION = '1.0.8';
+    public const VERSION = '1.0.9';
 
     /**
      * Get the current version of the package
