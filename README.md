@@ -31,6 +31,9 @@ vendor/bin/ai-overview generate
 
 # Generate and watch for changes
 vendor/bin/ai-overview generate --watch
+
+# Generate overview with all code files included
+vendor/bin/ai-overview generate-all
 ```
 
 This will create an `ai-overview.md` file in your project root with:
@@ -47,6 +50,14 @@ For Laravel projects, additional sections are automatically included:
 
 8. **Laravel Routes**: API and web routes with their controllers
 9. **Database Schema**: Table structure extracted from migrations and models
+
+For comprehensive AI analysis, you can also generate a complete overview that includes the full content of all code files:
+
+```bash
+vendor/bin/ai-overview generate-all
+```
+
+This will create an `ai-overview-all.md` file that includes everything in the regular overview plus the full content of all code files in your project (respecting the exclusion settings in your configuration). This is particularly useful when you want to provide a complete view of your codebase to AI tools for deep analysis.
 
 ### Code Quality Tools
 
@@ -138,18 +149,26 @@ Here's an example configuration file:
     "env_variables": true,
     "laravel_routes": true,
     "laravel_schema": true
+  },
+  "code_files": {
+    "extensions": [
+      ".php", ".blade.php", ".js", ".css", 
+      ".rb", ".erb", ".yml", ".json"
+    ]
   }
 }
 ```
 
 ### Configuration Options
 
-- **output_file**: The name of the generated overview file (default: `ai-overview.md`)
-- **excluded_directories**: Directories to exclude from the directory tree and file watching. Supports both simple directory names (e.g., `vendor`) and path-based exclusions (e.g., `path/to/directory`)
-- **excluded_files**: Files to exclude from the directory tree and file watching
+- **output_file**: The name of the generated overview file (default: `ai-overview.md`). When using `generate-all`, it will create a file with "-all" appended before the extension (e.g., `ai-overview-all.md`)
+- **excluded_directories**: Directories to exclude from the directory tree, file watching, and code file inclusion when using `generate-all`. Supports both simple directory names (e.g., `vendor`) and path-based exclusions (e.g., `path/to/directory`)
+- **excluded_files**: Files to exclude from the directory tree, file watching, and code file inclusion when using `generate-all`
 - **directory_tree**: Configuration options for the directory tree viewer
   - **max_depth**: Maximum depth to display in the directory tree (default: `4`)
 - **viewers**: Enable or disable specific viewers
+- **code_files**: Configuration options for the code files included in `generate-all` command
+  - **extensions**: Array of file extensions to include when using the `generate-all` command. If not specified, default extensions for PHP/Laravel and Ruby on Rails will be used.
 
 ## How It Works
 
