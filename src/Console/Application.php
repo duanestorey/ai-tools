@@ -2,6 +2,7 @@
 
 namespace DuaneStorey\AiTools\Console;
 
+use DuaneStorey\AiTools\Console\Command\GenerateAllCommand;
 use DuaneStorey\AiTools\Console\Command\GenerateOverviewCommand;
 use DuaneStorey\AiTools\Console\Command\InitConfigCommand;
 use DuaneStorey\AiTools\Core\Version;
@@ -15,5 +16,6 @@ class Application extends BaseApplication
 
         $this->add(new GenerateOverviewCommand);
         $this->add(new InitConfigCommand);
+        $this->add(new GenerateAllCommand);
     }
 }

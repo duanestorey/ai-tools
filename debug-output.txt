@@ -1,0 +1,22 @@
+
+duanestorey/ai-tools v1.1.0
+===========================
+
+ Project root: /Users/duane/Code/Personal/Projects/ai-tools
+ [1] Processing Project Information
+ [2] Processing Directory Tree
+ [3] Processing Composer JSON
+ [4] Processing README
+ [5] Processing Git Information
+ [6] Processing Environment Variables
+ [7] Processing All Code Files
+
+Using custom file extensions: .php, .json, .md
+
+Using extensions: .php, .json, .md
+
+Included 34 files, excluded 7 files based on extension filtering.
+Included files: test-extensions.php (.php), ai-project-overview-all.md (.md), homebrew/README.md (.md), .ai-tools-test.json (.json), docs/CREATING_CUSTOM_VIEWERS.md (.md), README.md (.md), pint.json (.json), test-exclusion.php (.php), ai-project-overview.md (.md), .ai-tools.json (.json), composer.json (.json), src/Core/OverviewGenerator.php (.php), src/Core/ProjectType.php (.php), src/Core/Configuration.php (.php), src/Core/Version.php (.php), src/Core/ProjectFinder.php (.php), src/Core/ProjectTypeDetector.php (.php), src/Viewers/ReadmeViewer.php (.php), src/Viewers/EnvVariablesViewer.php (.php), src/Viewers/AllCodeFilesViewer.php (.php), src/Viewers/ViewerInterface.php (.php), src/Viewers/PackageJsonViewer.php (.php), src/Viewers/DirectoryTreeViewer.php (.php), src/Viewers/ProjectInfoViewer.php (.php), src/Viewers/ComposerJsonViewer.php (.php), src/Viewers/GitInfoViewer.php (.php), src/Viewers/Laravel/SchemaViewer.php (.php), src/Viewers/Laravel/RoutesViewer.php (.php), src/Viewers/Rails/SchemaViewer.php (.php), src/Viewers/Rails/RoutesViewer.php (.php), src/Console/Application.php (.php), src/Console/Command/GenerateAllCommand.php (.php), src/Console/Command/InitConfigCommand.php (.php), src/Console/Command/GenerateOverviewCommand.php (.php)
+
+ [OK] Overview file generated: /Users/duane/Code/Personal/Projects/ai-tools/ai-project-overview-all.md      
+

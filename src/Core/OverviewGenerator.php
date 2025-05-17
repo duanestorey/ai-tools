@@ -31,12 +31,15 @@ class OverviewGenerator
     private ?ProjectType $projectType;
 
     private Configuration $config;
+    
+    private bool $includeAllFiles;
 
-    public function __construct(string $projectRoot, SymfonyStyle $io)
+    public function __construct(string $projectRoot, SymfonyStyle $io, bool $includeAllFiles = false)
     {
         $this->projectRoot = $projectRoot;
         $this->io = $io;
         $this->filesystem = new Filesystem;
+        $this->includeAllFiles = $includeAllFiles;
 
         // Load configuration
         $this->config = new Configuration($projectRoot);
@@ -106,6 +109,11 @@ class OverviewGenerator
                 $this->viewers[] = new RailsSchemaViewer($this->projectType);
             }
         }
+        
+        // Add AllCodeFilesViewer for the generate-all command
+        if ($this->includeAllFiles) {
+            $this->viewers[] = new \DuaneStorey\AiTools\Viewers\AllCodeFilesViewer();
+        }
 
         // Additional framework-specific viewers can be added here in the future
     }
@@ -115,7 +123,16 @@ class OverviewGenerator
      */
     public function generate(): int
     {
-        $outputFile = $this->config->get('output_file', 'ai-overview.md');
+        $baseOutputFile = $this->config->get('output_file', 'ai-overview.md');
+        
+        // If we're including all files, modify the output filename
+        if ($this->includeAllFiles) {
+            $pathInfo = pathinfo($baseOutputFile);
+            $outputFile = $pathInfo['filename'] . '-all.' . ($pathInfo['extension'] ?? 'md');
+        } else {
+            $outputFile = $baseOutputFile;
+        }
+        
         $outputPath = $this->projectRoot.'/'.$outputFile;
         $content = '';
         $hasChanges = false;
